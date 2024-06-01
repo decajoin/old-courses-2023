@@ -1,0 +1,137 @@
+第一题
+void compare(SqList L1,SqList L2)
+{
+	if(L1.length == L2.length && L1.length == 0) 
+	{
+		cout<< "A=B";
+		return;
+	}
+	
+	int i = 1;
+	int e;
+	while(L1.elem[i - 1] == L2.elem[i - 1])
+	{
+		ListDelet(L1,i,e);	// 删除第一个元素 
+		ListDelet(L2,i,e);	// while可以删除所有的相同前缀 
+	}
+	if(L1.elem[0] == L2.elem[0] || (L1.length == L2.length && L1.length == 0) )cout<< "A=B";
+	else if(L1.elem[0] > L2.elem[0] || (L2.length == 0 && L1.length > 0)) cout << "A>B";
+	else cout << "A<B";
+	
+}
+
+第二题
+void inverse(SqList &L)
+{
+	for(int i = 0;i < L.length/2;i++)	
+	{
+		int temp = L.elem[i];
+		L.elem[i] = L.elem[L.length - i -1];
+		L.elem[L.length - i - 1] = temp;
+	}
+}
+
+第三题
+int LENGTH(LinkList L)
+{
+	LinkList r = L->next;
+	int cnt = 0;
+	while(r != NULL)
+	{
+		cnt++;
+		r = r->next;
+	}
+	return cnt;
+}
+
+第四题
+LinkList merge(LinkList &L1,LinkList &L2)
+{
+	LinkList hc;
+	int len1 = ListLength(L1);
+	int len2 = ListLength(L2);
+	if(len1 == 0 && len2 > 0) hc = L2;
+	else if(len2 == 0 && len1 > 0) hc = L1;
+	else if(len1 >= len2)
+	{
+		hc = L2;
+		LinkList r;
+		r = L2;
+		while(r->next != NULL)
+		{
+			r = r->next;
+		}
+		r->next = L1->next;
+	}
+	else if(len1 < len2)
+	{
+		hc = L1;
+		LinkList r;
+		r = L1;
+		while(r->next != NULL)
+		{
+			r = r->next;
+		}
+		r->next = L2->next;		
+	}
+	return hc;
+}
+算法复杂度分析：L1长度为m，L2长度为n，若m<n是O(m),若m>n是O(n)
+
+第五题
+void deletrange(LinkList &L,int mink,int maxk)	// 链表是单增的 
+{
+	LinkList l,r;
+	l = L;
+	r = L;
+	while(l->next->data < mink)
+	{
+		l = l->next;
+	}
+	while(r->next->data < maxk)
+	{
+		r = r->next;
+	}
+	LinkList x;
+	x = l->next;	
+	l->next = r->next->next;
+	free(x);
+}
+算法复杂度分析： 复杂度取决与maxk值的大小，最差算法复杂度是O(n),n是链表的长度
+
+第六题
+
+void inverse(LinkList L)
+{
+    LinkList p;
+    p = L->next;
+    L->next = NULL;
+    while(p != NULL)
+	{
+        LNode *tmp;
+        tmp = p->next;
+        p->next = L->next;
+        L->next = p;
+        p = tmp;
+    }
+}
+
+第七题
+LinkList locationlist(LinkList L,LinkList p)	// 寻找p结点的前驱
+{
+	LinkList q;
+	q = p;
+	while(q->next != p)
+	{
+		q = q->next;
+	}
+	return q;
+}
+void deletlist(LinkList &L,LinkList s)
+{
+	LinkList p1, p2;
+	p1 = locationlist(L,s);		// 调用两次找到s的前驱结点点的前驱结点
+	p2 = locationlist(L,p1);
+	p2->next = s;				// 删除操作
+	free(p1);					// 释放删除的结点
+}
